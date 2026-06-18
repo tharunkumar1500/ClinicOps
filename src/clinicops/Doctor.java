@@ -30,6 +30,14 @@ public class Doctor {
         return !bookedSlots.contains(slot);
     }
 
+    public boolean isSlotInShift(String slot) {
+        boolean isMorningSlot = slot.contains("AM") || slot.equals("12:00 PM") || slot.equals("12:30 PM");
+        if (shift == Shift.BOTH) return true;
+        if (shift == Shift.MORNING) return isMorningSlot;
+        if (shift == Shift.EVENING) return !isMorningSlot;
+        return false;
+    }
+
     public void bookSlot(String slot) {
         bookedSlots.add(slot);
     }

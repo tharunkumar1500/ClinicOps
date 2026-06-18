@@ -1,60 +1,44 @@
-# UC9: Appointment Booking
+# UC10 & UC11: Appointment Filters (Specialization & Shift)
 
-**Purpose:** Front Desk Executive books an appointment for a registered patient by selecting an available time slot. The system automatically assigns a random doctor who is free during that slot.
+**Purpose:** Enhances the appointment booking process by filtering doctors based on the required specialization and ensuring they are on duty during the selected time slot.
 
-## New Files
-- `Appointment.java` - Holds the Patient, Doctor, and selected time slot.
+## Features Added
+- Specialization Input: Front Desk Executive selects required specialization for the appointment.
+- Shift Compatibility: System ensures the chosen time slot falls within the doctor's assigned shift (MORNING, EVENING, or BOTH).
+- Slot Availability Check: System ensures the doctor hasn't already been booked for that exact slot.
 
-## Sample Input:
+## Sample Output (Failing Case - Wrong Shift):
 ```
-1               (Admin)
-2               (Bulk Entry)
-doctors.csv     (File path)
-5               (Logout)
-2               (Front Desk)
-1               (Register Patient)
-9876543210      (Mobile)
-John Doe        (Name)
-M               (Gender)
-30              (Age)
-3               (Book Appointment)
-9876543210      (Mobile)
-1               (Select Slot: 09:00 AM)
-4               (Logout)
-3               (Exit)
-```
-
-## Sample Output:
-```
-============================================================================
-        Welcome to TownClinic - ClinicOps Management System
-============================================================================
-
---- Front Desk Executive Menu ---
-Enter your choice: 3
-
 --- Book Appointment ---
   Enter Patient Mobile Number: 9876543210
 
   Available Slots:
-    1. 09:00 AM
-    2. 09:30 AM
-    3. 10:00 AM
-    4. 10:30 AM
-    5. 11:00 AM
-    6. 11:30 AM
-    7. 12:00 PM
-    8. 12:30 PM
-    9. 04:00 PM
-    10. 04:30 PM
-    11. 05:00 PM
-    12. 05:30 PM
-    13. 06:00 PM
-    14. 06:30 PM
-    15. 07:00 PM
-    16. 07:30 PM
+    1. 09:00 AM ... 
   Select a slot number: 1
 
+  Select Required Specialization:
+  Select from the following:
+    1. GENERAL_PHYSICIAN ...
+    3. ENDOCRINOLOGIST
+  Enter choice: 3
+>> No doctors are available for ENDOCRINOLOGIST at the selected slot (09:00 AM).
+```
+*(Dr. Bob is an Endocrinologist but only works the EVENING shift, so 09:00 AM fails).*
+
+## Sample Output (Success Case - Shift & Spec match):
+```
+--- Book Appointment ---
+  Enter Patient Mobile Number: 9876543210
+
+  ...
+  Select a slot number: 1
+
+  Select Required Specialization:
+  Select from the following:
+    1. GENERAL_PHYSICIAN ...
+    5. CHILD_SPECIALIST
+  Enter choice: 5
+
 >> Appointment Booked Successfully!
-   Appointment Slot: 09:00 AM | Doctor: Dr. Bob | Patient: John Doe
+   Appointment Slot: 09:00 AM | Doctor: Dr. Alice | Patient: John Doe
 ```

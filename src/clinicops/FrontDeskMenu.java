@@ -136,6 +136,10 @@ public class FrontDeskMenu {
         }
 
         String selectedSlot = ScannerHelper.selectSlotFromList(scanner);
+        
+        System.out.println("\n  Select Required Specialization:");
+        Specialization reqSpec = ScannerHelper.readEnumChoice(scanner, Specialization.values());
+
         ArrayList<Doctor> allDoctors = AdminMenu.getDoctorList();
         
         if (allDoctors.isEmpty()) {
@@ -145,13 +149,13 @@ public class FrontDeskMenu {
 
         ArrayList<Doctor> availableDoctors = new ArrayList<>();
         for (Doctor doctor : allDoctors) {
-            if (doctor.isSlotAvailable(selectedSlot)) {
+            if (doctor.getSpecialization() == reqSpec && doctor.isSlotInShift(selectedSlot) && doctor.isSlotAvailable(selectedSlot)) {
                 availableDoctors.add(doctor);
             }
         }
 
         if (availableDoctors.isEmpty()) {
-            System.out.println(">> No doctors are available for the selected slot (" + selectedSlot + ").");
+            System.out.println(">> No doctors are available for " + reqSpec + " at the selected slot (" + selectedSlot + ").");
         } else {
             // Select a random available doctor
             java.util.Random rand = new java.util.Random();
