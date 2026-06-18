@@ -12,7 +12,7 @@ import java.util.Scanner;
  * Handles InputMismatchException and input buffer management.
  *
  * @author Developer
- * @version 1.0
+ * @version 2.0
  */
 public class ScannerHelper {
 
@@ -45,5 +45,25 @@ public class ScannerHelper {
             }
         }
         return input;
+    }
+
+    /**
+     * Reads an integer with a prompt.
+     */
+    public static int readIntWithPrompt(Scanner scanner, String prompt) {
+        int value = -1;
+        boolean valid = false;
+        while (!valid) {
+            System.out.print(prompt);
+            try {
+                value = scanner.nextInt();
+                valid = true;
+            } catch (InputMismatchException e) {
+                System.out.println(">> Invalid input. Please enter a valid number.");
+            } finally {
+                scanner.nextLine(); // Clear input buffer
+            }
+        }
+        return value;
     }
 }
