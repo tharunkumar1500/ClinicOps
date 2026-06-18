@@ -22,7 +22,7 @@ public class FileHandler {
      * @param startId The starting ID counter for assigning IDs.
      * @return An ArrayList of Doctor objects parsed from the file.
      */
-    public static ArrayList<Doctor> loadDoctorsFromCsv(String filePath, int startId) {
+    public static ArrayList<Doctor> loadDoctorsFromCsv(String filePath, int startId, ArrayList<Doctor> existingDoctors) {
         ArrayList<Doctor> newDoctors = new ArrayList<>();
         int currentId = startId;
 
@@ -31,25 +31,57 @@ public class FileHandler {
             boolean isFirstLine = true;
 
             while ((line = br.readLine()) != null) {
-                // Skip header line if present
+                line = line.trim();
+                // Format sensitivity: Skip empty lines or bad lines
+                if (line.isEmpty()) continue;
+
                 if (isFirstLine) {
                     isFirstLine = false;
-                    if (line.toLowerCase().contains("name")) {
-                        continue;
-                    }
+                    if (line.toLowerCase().contains("name")) continue;
                 }
 
-                String[] data = line.split(",");
-                if (data.length == 4) {
+                // Handle basic CSV parsing, even with optional quotes
+                String[] data = line.replace("\"", "").split(",");
+                if (data.length >= 4) {
                     try {
                         String name = data[0].trim();
                         Specialization specialization = Specialization.valueOf(data[1].trim().toUpperCase());
                         int experience = Integer.parseInt(data[2].trim());
                         Shift shift = Shift.valueOf(data[3].trim().toUpperCase());
 
-                        String id = String.format("D%04d", currentId++);
-                        Doctor doctor = new Doctor(id, name, specialization, experience, shift);
-                        newDoctors.add(doctor);
+                        // Duplicate data check (uniqueness on name + exp + specialization)
+                        boolean isDuplicate = false;
+                        
+                        // Check against existing doctors
+                        for (Doctor d : existingDoctors) {
+                            if (d.getName().equalsIgnoreCase(name) && 
+                                d.getExperience() == experience && 
+                                d.getSpecialization() == specialization) {
+                                isDuplicate = true;
+                                break;
+                            }
+                        }
+                        
+                        // Check against newly added doctors in this batch
+                        if (!isDuplicate) {
+                            for (Doctor d : newDoctors) {
+                                if (d.getName().equalsIgnoreCase(name) && 
+                                    d.getExperience() == experience && 
+                                    d.getSpecialization() == specialization) {
+                                    isDuplicate = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (isDuplicate) {
+                            System.out.println(">> Duplicate found: " + name + " (" + specialization + ", " + experience + " yrs). Skipping.");
+                        } else {
+                            String id = String.format("D%04d", currentId++);
+                            Doctor doctor = new Doctor(id, name, specialization, experience, shift);
+                            newDoctors.add(doctor);
+                        }
+
                     } catch (IllegalArgumentException e) {
                         System.out.println(">> Error parsing line: " + line + ". Skipping. " + e.getMessage());
                     }

@@ -98,7 +98,7 @@ public class AdminMenu {
         System.out.println("\n--- Bulk Entry (Doctors) ---");
         String filePath = ScannerHelper.readNonEmptyString(scanner, "  Enter the CSV file path: ");
         
-        ArrayList<Doctor> newDoctors = FileHandler.loadDoctorsFromCsv(filePath, idCounter);
+        ArrayList<Doctor> newDoctors = FileHandler.loadDoctorsFromCsv(filePath, idCounter, doctorList);
         
         if (!newDoctors.isEmpty()) {
             doctorList.addAll(newDoctors);

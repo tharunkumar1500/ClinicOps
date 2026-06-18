@@ -1,10 +1,6 @@
-# UC5: Bulk Data Entry for Doctors
+# UC6: Robust CSV Parsing & Duplicate Handling
 
-**Purpose:** Import doctor details from a CSV file, validate against Enums, and update the list.
-
-## New Files
-- `FileHandler.java` - Utility class to read CSV and parse data.
-- `doctors.csv` - Sample CSV file for bulk import.
+**Purpose:** Enhance bulk entry with format sensitivity (skip bad lines) and duplicate data checking (uniqueness check on name + exp + specialization) without relying on heavy external dependencies.
 
 ## Sample Input:
 ```
@@ -22,6 +18,11 @@ Name,Specialization,Experience,Shift
 Dr. Smith,INTERNAL_MEDICINE,15,MORNING
 Dr. Alice,CHILD_SPECIALIST,12,BOTH
 Dr. Bob,ENDOCRINOLOGIST,8,EVENING
+
+"Dr. Smith",INTERNAL_MEDICINE,15,MORNING
+Dr. Malathi,GYNAECOLOGIST,10,MORNING
+Dr. Invalid,INVALID_SPEC,5,MORNING
+Dr. Incomplete,CARDIOLOGIST
 ```
 
 ## Sample Output:
@@ -35,7 +36,10 @@ Enter your choice: 2
 
 --- Bulk Entry (Doctors) ---
   Enter the CSV file path: doctors.csv
->> 3 doctors successfully imported!
+>> Duplicate found: Dr. Smith (INTERNAL_MEDICINE, 15 yrs). Skipping.
+>> Error parsing line: Dr. Invalid,INVALID_SPEC,5,MORNING. Skipping. No enum constant clinicops.Specialization.INVALID_SPEC
+>> Invalid data format in line: Dr. Incomplete,CARDIOLOGIST. Skipping.
+>> 4 doctors successfully imported!
 
 --- Clinic Admin Menu ---
 Enter your choice: 4
@@ -46,8 +50,9 @@ Enter your choice: 4
 ID: D0001 | Name: Dr. Smith       | Specialization: INTERNAL_MEDICINE  | Exp: 15 yrs | Shift: MORNING
 ID: D0002 | Name: Dr. Alice       | Specialization: CHILD_SPECIALIST   | Exp: 12 yrs | Shift: BOTH
 ID: D0003 | Name: Dr. Bob         | Specialization: ENDOCRINOLOGIST    | Exp:  8 yrs | Shift: EVENING
+ID: D0004 | Name: Dr. Malathi     | Specialization: GYNAECOLOGIST      | Exp: 10 yrs | Shift: MORNING
 ============================================================================
-Total Doctors: 3
+Total Doctors: 4
 
 Thank you for using ClinicOps. Goodbye!
 ```
