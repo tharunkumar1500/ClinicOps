@@ -67,16 +67,38 @@ public class FrontDeskMenu {
     private static void registerPatient(Scanner scanner) {
         System.out.println("\n--- Register New Patient ---");
 
+        String mobileNumber = ScannerHelper.readMobileNumber(scanner, "  Enter Mobile Number (10 digits): ");
+        
+        Patient existingPatient = findPatientByMobile(mobileNumber);
+        if (existingPatient != null) {
+            System.out.println(">> RECORD FOUND: This patient is already registered.");
+            System.out.println("   Details: " + existingPatient);
+            System.out.println(">> Registration cancelled to avoid duplication.");
+            return;
+        }
+
         String name = ScannerHelper.readNonEmptyString(scanner, "  Enter Patient Name: ");
         String gender = ScannerHelper.readNonEmptyString(scanner, "  Enter Gender (M/F/O): ");
         int age = ScannerHelper.readIntWithPrompt(scanner, "  Enter Age: ");
-        String mobileNumber = ScannerHelper.readMobileNumber(scanner, "  Enter Mobile Number (10 digits): ");
 
         String id = String.format("P%04d", patientIdCounter++);
         Patient patient = new Patient(id, name, gender, age, mobileNumber);
         
         patientList.add(patient);
         System.out.println(">> Patient registered successfully! ID: " + id);
+    }
+
+    /**
+     * Finds a patient by their mobile number.
+     * @return Patient object if found, null otherwise.
+     */
+    private static Patient findPatientByMobile(String mobile) {
+        for (Patient patient : patientList) {
+            if (patient.getMobileNumber().equals(mobile)) {
+                return patient;
+            }
+        }
+        return null;
     }
 
     /**
