@@ -23,7 +23,7 @@ public class AdminMenu {
                     registerDoctors(scanner);
                     break;
                 case 2:
-                    System.out.println(">> [Placeholder] Bulk Entry - To be implemented.");
+                    handleBulkEntry(scanner);
                     break;
                 case 3:
                     System.out.println(">> [Placeholder] Audit - To be implemented.");
@@ -92,5 +92,20 @@ public class AdminMenu {
 
     public static ArrayList<Doctor> getDoctorList() {
         return doctorList;
+    }
+
+    private static void handleBulkEntry(Scanner scanner) {
+        System.out.println("\n--- Bulk Entry (Doctors) ---");
+        String filePath = ScannerHelper.readNonEmptyString(scanner, "  Enter the CSV file path: ");
+        
+        ArrayList<Doctor> newDoctors = FileHandler.loadDoctorsFromCsv(filePath, idCounter);
+        
+        if (!newDoctors.isEmpty()) {
+            doctorList.addAll(newDoctors);
+            idCounter += newDoctors.size();
+            System.out.println(">> " + newDoctors.size() + " doctors successfully imported!");
+        } else {
+            System.out.println(">> No valid doctors imported from the file.");
+        }
     }
 }
