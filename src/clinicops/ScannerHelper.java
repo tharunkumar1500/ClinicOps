@@ -4,22 +4,10 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
- * ============================================================================
- * HELPER CLASS - ScannerHelper
- * ============================================================================
- *
- * Utility class providing safe input reading methods.
- * Handles InputMismatchException and input buffer management.
- *
- * @author Developer
- * @version 2.0
+ * UC4: ScannerHelper with generic Enum reader.
  */
 public class ScannerHelper {
 
-    /**
-     * Reads an integer safely from the scanner.
-     * Handles InputMismatchException and clears the buffer.
-     */
     public static int readInt(Scanner scanner) {
         int value = -1;
         try {
@@ -27,14 +15,11 @@ public class ScannerHelper {
         } catch (InputMismatchException e) {
             System.out.println(">> Invalid input. Please enter a number.");
         } finally {
-            scanner.nextLine(); // Clear input buffer
+            scanner.nextLine();
         }
         return value;
     }
 
-    /**
-     * Reads a non-empty string with a prompt.
-     */
     public static String readNonEmptyString(Scanner scanner, String prompt) {
         String input = "";
         while (input.isEmpty()) {
@@ -47,9 +32,6 @@ public class ScannerHelper {
         return input;
     }
 
-    /**
-     * Reads an integer with a prompt.
-     */
     public static int readIntWithPrompt(Scanner scanner, String prompt) {
         int value = -1;
         boolean valid = false;
@@ -61,9 +43,29 @@ public class ScannerHelper {
             } catch (InputMismatchException e) {
                 System.out.println(">> Invalid input. Please enter a valid number.");
             } finally {
-                scanner.nextLine(); // Clear input buffer
+                scanner.nextLine();
             }
         }
         return value;
+    }
+
+    /**
+     * Generic method to read enum choice from user.
+     * Displays all enum values as a numbered list.
+     */
+    public static <T extends Enum<T>> T readEnumChoice(Scanner scanner, T[] values) {
+        while (true) {
+            System.out.println("  Select from the following:");
+            for (int i = 0; i < values.length; i++) {
+                System.out.println("    " + (i + 1) + ". " + values[i]);
+            }
+            System.out.print("  Enter choice: ");
+            int choice = readInt(scanner);
+
+            if (choice >= 1 && choice <= values.length) {
+                return values[choice - 1];
+            }
+            System.out.println(">> Invalid choice. Please try again.");
+        }
     }
 }

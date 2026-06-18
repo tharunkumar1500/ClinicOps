@@ -1,38 +1,22 @@
-# UC3: Refactored Doctor Data with OOP
+# UC4: Fixed Values Using Enums
 
-**Purpose:** Refactor UC2 to use Doctor class, ArrayList, and auto-generated IDs.
+**Purpose:** Prevent user typos by using Enums for Shift and Specialization with menu selection.
 
-## Project Structure
-```
-src/clinicops/
-├── ClinicApp.java       (Main entry point)
-├── ScannerHelper.java   (Input utility helper)
-├── AdminMenu.java       (Refactored with ArrayList<Doctor>)
-├── Doctor.java          [NEW] (Blueprint class with toString)
-└── FrontDeskMenu.java   (Front Desk Executive menu)
-```
+## New Files
+- `Shift.java` - Enum: MORNING, EVENING, BOTH
+- `Specialization.java` - Enum: GENERAL_PHYSICIAN, INTERNAL_MEDICINE, ENDOCRINOLOGIST, CARDIOLOGIST, CHILD_SPECIALIST, GYNAECOLOGIST
 
 ## Sample Input:
 ```
 1
 1
 Dr. Ravi
-Cardiology
+4       (selects CARDIOLOGIST)
 10
-Morning
-1
-Dr. Meena
-Neurology
-8
-Evening
-1
-Dr. Arjun
-Orthopedics
-5
-Both
-4
-5
-3
+3       (selects BOTH)
+4       (Display Doctors)
+5       (Logout)
+3       (Exit)
 ```
 
 ## Sample Output:
@@ -41,43 +25,37 @@ Both
         Welcome to TownClinic - ClinicOps Management System
 ============================================================================
 
---- Select Your Role ---
-Enter your choice:
-
 --- Clinic Admin Menu ---
 Enter your choice:
 
 --- Register Doctor ---
   Enter Name: Dr. Ravi
-  Enter Specialization: Cardiology
+
+  Select Specialization:
+  Select from the following:
+    1. GENERAL_PHYSICIAN
+    2. INTERNAL_MEDICINE
+    3. ENDOCRINOLOGIST
+    4. CARDIOLOGIST
+    5. CHILD_SPECIALIST
+    6. GYNAECOLOGIST
+  Enter choice: 4
   Enter Experience (years): 10
-  Enter Shift (Morning/Evening/Both): Morning
+
+  Select Shift:
+  Select from the following:
+    1. MORNING
+    2. EVENING
+    3. BOTH
+  Enter choice: 3
 >> Doctor registered successfully! ID: D0001
-
-  Enter Name: Dr. Meena
-  Enter Specialization: Neurology
-  Enter Experience (years): 8
-  Enter Shift (Morning/Evening/Both): Evening
->> Doctor registered successfully! ID: D0002
-
-  Enter Name: Dr. Arjun
-  Enter Specialization: Orthopedics
-  Enter Experience (years): 5
-  Enter Shift (Morning/Evening/Both): Both
->> Doctor registered successfully! ID: D0003
-
---- Clinic Admin Menu ---
-Enter your choice: 4
 
 ============================================================================
                       Registered Doctors List
 ============================================================================
-ID: D0001 | Name: Dr. Ravi        | Specialization: Cardiology   | Exp: 10 yrs | Shift: Morning
-ID: D0002 | Name: Dr. Meena       | Specialization: Neurology    | Exp:  8 yrs | Shift: Evening
-ID: D0003 | Name: Dr. Arjun       | Specialization: Orthopedics  | Exp:  5 yrs | Shift: Both
+ID: D0001 | Name: Dr. Ravi        | Specialization: CARDIOLOGIST       | Exp: 10 yrs | Shift: BOTH
 ============================================================================
-Total Doctors: 3
+Total Doctors: 1
 
->> Logging out from Admin...
 Thank you for using ClinicOps. Goodbye!
 ```

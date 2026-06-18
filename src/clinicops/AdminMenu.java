@@ -4,25 +4,13 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
- * ============================================================================
- * MENU CLASS - AdminMenu
- * ============================================================================
- *
- * UC3: Refactored to use Doctor class and ArrayList.
- * Auto-generates IDs using idCounter.
- *
- * @author Developer
- * @version 3.0
+ * UC4: AdminMenu using Enums for Specialization and Shift input.
  */
 public class AdminMenu {
 
-    // Refactored: ArrayList of Doctor objects instead of static arrays
     private static ArrayList<Doctor> doctorList = new ArrayList<>();
     private static int idCounter = 1;
 
-    /**
-     * Displays the Admin menu and handles user choices.
-     */
     public static void showMenu(Scanner scanner) {
         boolean logout = false;
 
@@ -53,9 +41,6 @@ public class AdminMenu {
         }
     }
 
-    /**
-     * Displays the admin menu options.
-     */
     private static void displayAdminOptions() {
         System.out.println("\n--- Clinic Admin Menu ---");
         System.out.println("1. Doctor's Entry");
@@ -66,18 +51,19 @@ public class AdminMenu {
         System.out.print("Enter your choice: ");
     }
 
-    /**
-     * Registers a doctor using Doctor object and adds to doctorList.
-     */
     private static void registerDoctors(Scanner scanner) {
         System.out.println("\n--- Register Doctor ---");
 
         String name = ScannerHelper.readNonEmptyString(scanner, "  Enter Name: ");
-        String specialization = ScannerHelper.readNonEmptyString(scanner, "  Enter Specialization: ");
-        int experience = ScannerHelper.readIntWithPrompt(scanner, "  Enter Experience (years): ");
-        String shift = ScannerHelper.readNonEmptyString(scanner, "  Enter Shift (Morning/Evening/Both): ");
 
-        // Auto-generate ID
+        System.out.println("\n  Select Specialization:");
+        Specialization specialization = ScannerHelper.readEnumChoice(scanner, Specialization.values());
+
+        int experience = ScannerHelper.readIntWithPrompt(scanner, "  Enter Experience (years): ");
+
+        System.out.println("\n  Select Shift:");
+        Shift shift = ScannerHelper.readEnumChoice(scanner, Shift.values());
+
         String id = String.format("D%04d", idCounter++);
 
         Doctor doctor = new Doctor(id, name, specialization, experience, shift);
@@ -86,9 +72,6 @@ public class AdminMenu {
         System.out.println(">> Doctor registered successfully! ID: " + id);
     }
 
-    /**
-     * Displays all registered doctors from the ArrayList.
-     */
     private static void displayDoctors() {
         if (doctorList.isEmpty()) {
             System.out.println("\n>> No doctors registered yet.");
@@ -107,9 +90,6 @@ public class AdminMenu {
         System.out.println("Total Doctors: " + doctorList.size());
     }
 
-    /**
-     * Returns the doctor list (for inter-class communication).
-     */
     public static ArrayList<Doctor> getDoctorList() {
         return doctorList;
     }
