@@ -1,13 +1,14 @@
-# UC2: Doctors' Data in the System
+# UC3: Refactored Doctor Data with OOP
 
-**Purpose:** Enter doctors' details with input validation using static class-level variables.
+**Purpose:** Refactor UC2 to use Doctor class, ArrayList, and auto-generated IDs.
 
 ## Project Structure
 ```
 src/clinicops/
 ├── ClinicApp.java       (Main entry point)
-├── ScannerHelper.java   (Input utility - added readIntWithPrompt)
-├── AdminMenu.java       (Doctor registration & display - static arrays)
+├── ScannerHelper.java   (Input utility helper)
+├── AdminMenu.java       (Refactored with ArrayList<Doctor>)
+├── Doctor.java          [NEW] (Blueprint class with toString)
 └── FrontDeskMenu.java   (Front Desk Executive menu)
 ```
 
@@ -18,12 +19,17 @@ src/clinicops/
 Dr. Ravi
 Cardiology
 10
+Morning
+1
 Dr. Meena
 Neurology
 8
+Evening
+1
 Dr. Arjun
 Orthopedics
 5
+Both
 4
 5
 3
@@ -36,61 +42,42 @@ Orthopedics
 ============================================================================
 
 --- Select Your Role ---
-1. Clinic Admin
-2. Front Desk Executive
-3. Exit
 Enter your choice:
 
 --- Clinic Admin Menu ---
-1. Doctor's Entry
-2. Bulk Entry
-3. Audit
-4. Display Doctor's List
-5. Logout
 Enter your choice:
 
---- Register Doctors (Enter 3 Doctors) ---
-
-Doctor 1:
+--- Register Doctor ---
   Enter Name: Dr. Ravi
   Enter Specialization: Cardiology
   Enter Experience (years): 10
+  Enter Shift (Morning/Evening/Both): Morning
+>> Doctor registered successfully! ID: D0001
 
-Doctor 2:
   Enter Name: Dr. Meena
   Enter Specialization: Neurology
   Enter Experience (years): 8
+  Enter Shift (Morning/Evening/Both): Evening
+>> Doctor registered successfully! ID: D0002
 
-Doctor 3:
   Enter Name: Dr. Arjun
   Enter Specialization: Orthopedics
   Enter Experience (years): 5
-
->> 3 Doctors registered successfully!
+  Enter Shift (Morning/Evening/Both): Both
+>> Doctor registered successfully! ID: D0003
 
 --- Clinic Admin Menu ---
-1. Doctor's Entry
-2. Bulk Entry
-3. Audit
-4. Display Doctor's List
-5. Logout
-Enter your choice:
+Enter your choice: 4
 
 ============================================================================
                       Registered Doctors List
 ============================================================================
-No.   | Name                 | Specialization       | Exp (yrs)
-----------------------------------------------------------------------------
-1     | Dr. Ravi             | Cardiology           | 10
-2     | Dr. Meena            | Neurology            | 8
-3     | Dr. Arjun            | Orthopedics          | 5
+ID: D0001 | Name: Dr. Ravi        | Specialization: Cardiology   | Exp: 10 yrs | Shift: Morning
+ID: D0002 | Name: Dr. Meena       | Specialization: Neurology    | Exp:  8 yrs | Shift: Evening
+ID: D0003 | Name: Dr. Arjun       | Specialization: Orthopedics  | Exp:  5 yrs | Shift: Both
 ============================================================================
+Total Doctors: 3
 
---- Clinic Admin Menu ---
-Enter your choice: >> Logging out from Admin...
-
---- Select Your Role ---
-Enter your choice:
-
+>> Logging out from Admin...
 Thank you for using ClinicOps. Goodbye!
 ```

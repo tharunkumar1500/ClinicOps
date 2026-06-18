@@ -1,5 +1,6 @@
 package clinicops;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -7,19 +8,17 @@ import java.util.Scanner;
  * MENU CLASS - AdminMenu
  * ============================================================================
  *
- * UC2: Handles Clinic Admin menu options including Doctor's Entry.
- * Stores doctor data using static class-level variables.
+ * UC3: Refactored to use Doctor class and ArrayList.
+ * Auto-generates IDs using idCounter.
  *
  * @author Developer
- * @version 2.0
+ * @version 3.0
  */
 public class AdminMenu {
 
-    // Static class-level variables to hold doctor data
-    private static String[] doctorNames = new String[3];
-    private static String[] doctorSpecializations = new String[3];
-    private static int[] doctorExperience = new int[3];
-    private static int doctorCount = 0;
+    // Refactored: ArrayList of Doctor objects instead of static arrays
+    private static ArrayList<Doctor> doctorList = new ArrayList<>();
+    private static int idCounter = 1;
 
     /**
      * Displays the Admin menu and handles user choices.
@@ -68,28 +67,30 @@ public class AdminMenu {
     }
 
     /**
-     * Registers 3 doctors' details with input validation.
+     * Registers a doctor using Doctor object and adds to doctorList.
      */
     private static void registerDoctors(Scanner scanner) {
-        System.out.println("\n--- Register Doctors (Enter 3 Doctors) ---");
-        doctorCount = 0;
+        System.out.println("\n--- Register Doctor ---");
 
-        for (int i = 0; i < 3; i++) {
-            System.out.println("\nDoctor " + (i + 1) + ":");
-            doctorNames[i] = ScannerHelper.readNonEmptyString(scanner, "  Enter Name: ");
-            doctorSpecializations[i] = ScannerHelper.readNonEmptyString(scanner, "  Enter Specialization: ");
-            doctorExperience[i] = ScannerHelper.readIntWithPrompt(scanner, "  Enter Experience (years): ");
-            doctorCount++;
-        }
+        String name = ScannerHelper.readNonEmptyString(scanner, "  Enter Name: ");
+        String specialization = ScannerHelper.readNonEmptyString(scanner, "  Enter Specialization: ");
+        int experience = ScannerHelper.readIntWithPrompt(scanner, "  Enter Experience (years): ");
+        String shift = ScannerHelper.readNonEmptyString(scanner, "  Enter Shift (Morning/Evening/Both): ");
 
-        System.out.println("\n>> 3 Doctors registered successfully!");
+        // Auto-generate ID
+        String id = String.format("D%04d", idCounter++);
+
+        Doctor doctor = new Doctor(id, name, specialization, experience, shift);
+        doctorList.add(doctor);
+
+        System.out.println(">> Doctor registered successfully! ID: " + id);
     }
 
     /**
-     * Displays all registered doctors.
+     * Displays all registered doctors from the ArrayList.
      */
     private static void displayDoctors() {
-        if (doctorCount == 0) {
+        if (doctorList.isEmpty()) {
             System.out.println("\n>> No doctors registered yet.");
             return;
         }
@@ -97,13 +98,19 @@ public class AdminMenu {
         System.out.println("\n============================================================================");
         System.out.println("                      Registered Doctors List");
         System.out.println("============================================================================");
-        System.out.printf("%-5s | %-20s | %-20s | %-10s%n", "No.", "Name", "Specialization", "Exp (yrs)");
-        System.out.println("----------------------------------------------------------------------------");
 
-        for (int i = 0; i < doctorCount; i++) {
-            System.out.printf("%-5d | %-20s | %-20s | %-10d%n",
-                    (i + 1), doctorNames[i], doctorSpecializations[i], doctorExperience[i]);
+        for (Doctor doctor : doctorList) {
+            System.out.println(doctor);
         }
+
         System.out.println("============================================================================");
+        System.out.println("Total Doctors: " + doctorList.size());
+    }
+
+    /**
+     * Returns the doctor list (for inter-class communication).
+     */
+    public static ArrayList<Doctor> getDoctorList() {
+        return doctorList;
     }
 }
