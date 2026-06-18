@@ -68,4 +68,22 @@ public class ScannerHelper {
             System.out.println(">> Invalid choice. Please try again.");
         }
     }
+
+    /**
+     * Reads a valid 10-digit Indian mobile number.
+     */
+    public static String readMobileNumber(Scanner scanner, String prompt) {
+        String mobile = "";
+        boolean valid = false;
+        while (!valid) {
+            System.out.print(prompt);
+            mobile = scanner.nextLine().trim();
+            if (mobile.matches("^[6-9]\\d{9}$")) {
+                valid = true;
+            } else {
+                System.out.println(">> Invalid mobile number. Must be 10 digits starting with 6-9. Try again.");
+            }
+        }
+        return mobile;
+    }
 }

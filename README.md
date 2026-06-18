@@ -1,28 +1,31 @@
-# UC6: Robust CSV Parsing & Duplicate Handling
+# UC7: Register Patient Data
 
-**Purpose:** Enhance bulk entry with format sensitivity (skip bad lines) and duplicate data checking (uniqueness check on name + exp + specialization) without relying on heavy external dependencies.
+**Purpose:** Allow the Front Desk Executive to register patients with a mobile number format check and auto-generated unique IDs.
+
+## New Files
+- `Patient.java` - Blueprint for patient data.
+
+## Features
+- Validates Indian mobile numbers (10 digits starting with 6-9).
+- Auto-generates patient IDs (e.g., P0001).
 
 ## Sample Input:
 ```
-1               (Admin)
-2               (Bulk Entry)
-doctors.csv     (File path)
-4               (Display)
-5               (Logout)
+2               (Front Desk Executive)
+1               (Register Patient)
+John Doe
+M
+30
+9876543210
+1               (Register Patient)
+Jane Doe
+F
+25
+invalid_num     (Fails regex check)
+8765432109      (Succeeds)
+2               (View Patients)
+4               (Logout)
 3               (Exit)
-```
-
-## Sample CSV (`doctors.csv`):
-```csv
-Name,Specialization,Experience,Shift
-Dr. Smith,INTERNAL_MEDICINE,15,MORNING
-Dr. Alice,CHILD_SPECIALIST,12,BOTH
-Dr. Bob,ENDOCRINOLOGIST,8,EVENING
-
-"Dr. Smith",INTERNAL_MEDICINE,15,MORNING
-Dr. Malathi,GYNAECOLOGIST,10,MORNING
-Dr. Invalid,INVALID_SPEC,5,MORNING
-Dr. Incomplete,CARDIOLOGIST
 ```
 
 ## Sample Output:
@@ -31,28 +34,38 @@ Dr. Incomplete,CARDIOLOGIST
         Welcome to TownClinic - ClinicOps Management System
 ============================================================================
 
---- Clinic Admin Menu ---
+--- Front Desk Executive Menu ---
+Enter your choice: 1
+
+--- Register New Patient ---
+  Enter Patient Name: John Doe
+  Enter Gender (M/F/O): M
+  Enter Age: 30
+  Enter Mobile Number (10 digits): 9876543210
+>> Patient registered successfully! ID: P0001
+
+--- Front Desk Executive Menu ---
+Enter your choice: 1
+
+--- Register New Patient ---
+  Enter Patient Name: Jane Doe
+  Enter Gender (M/F/O): F
+  Enter Age: 25
+  Enter Mobile Number (10 digits): invalid_num
+>> Invalid mobile number. Must be 10 digits starting with 6-9. Try again.
+  Enter Mobile Number (10 digits): 8765432109
+>> Patient registered successfully! ID: P0002
+
+--- Front Desk Executive Menu ---
 Enter your choice: 2
 
---- Bulk Entry (Doctors) ---
-  Enter the CSV file path: doctors.csv
->> Duplicate found: Dr. Smith (INTERNAL_MEDICINE, 15 yrs). Skipping.
->> Error parsing line: Dr. Invalid,INVALID_SPEC,5,MORNING. Skipping. No enum constant clinicops.Specialization.INVALID_SPEC
->> Invalid data format in line: Dr. Incomplete,CARDIOLOGIST. Skipping.
->> 4 doctors successfully imported!
-
---- Clinic Admin Menu ---
-Enter your choice: 4
-
 ============================================================================
-                      Registered Doctors List
+                      Registered Patients List
 ============================================================================
-ID: D0001 | Name: Dr. Smith       | Specialization: INTERNAL_MEDICINE  | Exp: 15 yrs | Shift: MORNING
-ID: D0002 | Name: Dr. Alice       | Specialization: CHILD_SPECIALIST   | Exp: 12 yrs | Shift: BOTH
-ID: D0003 | Name: Dr. Bob         | Specialization: ENDOCRINOLOGIST    | Exp:  8 yrs | Shift: EVENING
-ID: D0004 | Name: Dr. Malathi     | Specialization: GYNAECOLOGIST      | Exp: 10 yrs | Shift: MORNING
+Patient ID: P0001 | Name: John Doe        | Gender: M      | Age:  30 | Mobile: 9876543210
+Patient ID: P0002 | Name: Jane Doe        | Gender: F      | Age:  25 | Mobile: 8765432109
 ============================================================================
-Total Doctors: 4
+Total Patients: 2
 
 Thank you for using ClinicOps. Goodbye!
 ```
