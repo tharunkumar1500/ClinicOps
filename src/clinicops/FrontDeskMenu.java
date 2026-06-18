@@ -37,7 +37,7 @@ public class FrontDeskMenu {
                     viewPatients();
                     break;
                 case 3:
-                    System.out.println(">> [Placeholder] Book Appointment - To be implemented.");
+                    bookAppointment(scanner);
                     break;
                 case 4:
                     logout = true;
@@ -120,5 +120,48 @@ public class FrontDeskMenu {
 
         System.out.println("============================================================================");
         System.out.println("Total Patients: " + patientList.size());
+    }
+
+    /**
+     * Books an appointment for a registered patient.
+     */
+    private static void bookAppointment(Scanner scanner) {
+        System.out.println("\n--- Book Appointment ---");
+        String mobile = ScannerHelper.readMobileNumber(scanner, "  Enter Patient Mobile Number: ");
+        Patient patient = findPatientByMobile(mobile);
+
+        if (patient == null) {
+            System.out.println(">> Patient not found! Please register the patient first.");
+            return;
+        }
+
+        String selectedSlot = ScannerHelper.selectSlotFromList(scanner);
+        ArrayList<Doctor> allDoctors = AdminMenu.getDoctorList();
+        
+        if (allDoctors.isEmpty()) {
+            System.out.println(">> No doctors available in the system.");
+            return;
+        }
+
+        ArrayList<Doctor> availableDoctors = new ArrayList<>();
+        for (Doctor doctor : allDoctors) {
+            if (doctor.isSlotAvailable(selectedSlot)) {
+                availableDoctors.add(doctor);
+            }
+        }
+
+        if (availableDoctors.isEmpty()) {
+            System.out.println(">> No doctors are available for the selected slot (" + selectedSlot + ").");
+        } else {
+            // Select a random available doctor
+            java.util.Random rand = new java.util.Random();
+            Doctor assignedDoctor = availableDoctors.get(rand.nextInt(availableDoctors.size()));
+            
+            assignedDoctor.bookSlot(selectedSlot);
+            Appointment appointment = new Appointment(patient, assignedDoctor, selectedSlot);
+            
+            System.out.println("\n>> Appointment Booked Successfully!");
+            System.out.println("   " + appointment);
+        }
     }
 }

@@ -1,18 +1,25 @@
-# UC8: Patient Duplicate Check
+# UC9: Appointment Booking
 
-**Purpose:** Prevent duplicate patient registration by using the mobile number as a unique constraint. Checks if the mobile number exists before prompting for other details.
+**Purpose:** Front Desk Executive books an appointment for a registered patient by selecting an available time slot. The system automatically assigns a random doctor who is free during that slot.
+
+## New Files
+- `Appointment.java` - Holds the Patient, Doctor, and selected time slot.
 
 ## Sample Input:
 ```
-2               (Front Desk Executive)
+1               (Admin)
+2               (Bulk Entry)
+doctors.csv     (File path)
+5               (Logout)
+2               (Front Desk)
 1               (Register Patient)
-9876543210      (Mobile Number)
+9876543210      (Mobile)
 John Doe        (Name)
 M               (Gender)
 30              (Age)
-1               (Register Patient)
-9876543210      (Duplicate Mobile Number)
-2               (View Patients)
+3               (Book Appointment)
+9876543210      (Mobile)
+1               (Select Slot: 09:00 AM)
 4               (Logout)
 3               (Exit)
 ```
@@ -24,33 +31,30 @@ M               (Gender)
 ============================================================================
 
 --- Front Desk Executive Menu ---
-Enter your choice: 1
+Enter your choice: 3
 
---- Register New Patient ---
-  Enter Mobile Number (10 digits): 9876543210
-  Enter Patient Name: John Doe
-  Enter Gender (M/F/O): M
-  Enter Age: 30
->> Patient registered successfully! ID: P0001
+--- Book Appointment ---
+  Enter Patient Mobile Number: 9876543210
 
---- Front Desk Executive Menu ---
-Enter your choice: 1
+  Available Slots:
+    1. 09:00 AM
+    2. 09:30 AM
+    3. 10:00 AM
+    4. 10:30 AM
+    5. 11:00 AM
+    6. 11:30 AM
+    7. 12:00 PM
+    8. 12:30 PM
+    9. 04:00 PM
+    10. 04:30 PM
+    11. 05:00 PM
+    12. 05:30 PM
+    13. 06:00 PM
+    14. 06:30 PM
+    15. 07:00 PM
+    16. 07:30 PM
+  Select a slot number: 1
 
---- Register New Patient ---
-  Enter Mobile Number (10 digits): 9876543210
->> RECORD FOUND: This patient is already registered.
-   Details: Patient ID: P0001 | Name: John Doe        | Gender: M      | Age:  30 | Mobile: 9876543210
->> Registration cancelled to avoid duplication.
-
---- Front Desk Executive Menu ---
-Enter your choice: 2
-
-============================================================================
-                      Registered Patients List
-============================================================================
-Patient ID: P0001 | Name: John Doe        | Gender: M      | Age:  30 | Mobile: 9876543210
-============================================================================
-Total Patients: 1
-
-Thank you for using ClinicOps. Goodbye!
+>> Appointment Booked Successfully!
+   Appointment Slot: 09:00 AM | Doctor: Dr. Bob | Patient: John Doe
 ```
