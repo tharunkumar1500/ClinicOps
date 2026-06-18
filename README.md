@@ -1,2 +1,16 @@
-# ClinicOps
-Clinic Ops is a console-based application for a small clinic named “TownClinic”. The goal is to replace their paper-based records with a robust application that manages the lifecycle of a patient visit—from registration to appointment completion.
+# ClinicOps - TownClinic Management System
+
+A console-based Java application that manages the patient visit lifecycle from registration to appointment completion.
+
+## Use Cases Implemented
+
+1. **UC1:** Console Based Menu (Switch-Case, RBAC, Modular Architecture)
+
+## Project Structure
+```
+src/clinicops/
+├── ClinicApp.java       (Main entry point)
+├── ScannerHelper.java   (Input utility helper)
+├── AdminMenu.java       (Clinic Admin menu)
+└── FrontDeskMenu.java   (Front Desk Executive menu)
+```
