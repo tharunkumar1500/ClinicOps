@@ -84,9 +84,11 @@ public class FileHandler {
 
                     } catch (IllegalArgumentException e) {
                         System.out.println(">> Error parsing line: " + line + ". Skipping. " + e.getMessage());
+                        AuditLogger.logError("CSV Parsing Error in line: '" + line + "' -> " + e.getMessage());
                     }
                 } else {
                     System.out.println(">> Invalid data format in line: " + line + ". Skipping.");
+                    AuditLogger.logError("CSV Format Error (Invalid number of columns): " + line);
                 }
             }
         } catch (IOException e) {

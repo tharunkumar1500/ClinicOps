@@ -1,44 +1,30 @@
-# UC10 & UC11: Appointment Filters (Specialization & Shift)
+# UC12, UC13, UC14: Audit Logging (Functional, Error & Security)
 
-**Purpose:** Enhances the appointment booking process by filtering doctors based on the required specialization and ensuring they are on duty during the selected time slot.
+**Purpose:** Provide traceability by logging successful transactions (Functional), recording "silent" errors like CSV upload failures (Error), and tracking invalid attempts like wrong mobile numbers (Security).
+
+## New Files
+- `AuditLogger.java` - A custom logger utility class that formats and stores logs with timestamps and log levels.
 
 ## Features Added
-- Specialization Input: Front Desk Executive selects required specialization for the appointment.
-- Shift Compatibility: System ensures the chosen time slot falls within the doctor's assigned shift (MORNING, EVENING, or BOTH).
-- Slot Availability Check: System ensures the doctor hasn't already been booked for that exact slot.
+- **[INFO]**: Logs when doctors are registered (manually or via bulk upload) and when appointments are successfully booked.
+- **[WARNING]**: Logs when an invalid mobile number format is entered during patient registration or booking.
+- **[ERROR]**: Logs when a CSV parsing error or format mismatch occurs during the bulk upload process.
+- **View Audit Logs**: A dedicated admin menu option to display all recorded system logs.
 
-## Sample Output (Failing Case - Wrong Shift):
+## Sample Output (Audit Logs):
 ```
---- Book Appointment ---
-  Enter Patient Mobile Number: 9876543210
+--- Clinic Admin Menu ---
+Enter your choice: 3
 
-  Available Slots:
-    1. 09:00 AM ... 
-  Select a slot number: 1
-
-  Select Required Specialization:
-  Select from the following:
-    1. GENERAL_PHYSICIAN ...
-    3. ENDOCRINOLOGIST
-  Enter choice: 3
->> No doctors are available for ENDOCRINOLOGIST at the selected slot (09:00 AM).
-```
-*(Dr. Bob is an Endocrinologist but only works the EVENING shift, so 09:00 AM fails).*
-
-## Sample Output (Success Case - Shift & Spec match):
-```
---- Book Appointment ---
-  Enter Patient Mobile Number: 9876543210
-
-  ...
-  Select a slot number: 1
-
-  Select Required Specialization:
-  Select from the following:
-    1. GENERAL_PHYSICIAN ...
-    5. CHILD_SPECIALIST
-  Enter choice: 5
-
->> Appointment Booked Successfully!
-   Appointment Slot: 09:00 AM | Doctor: Dr. Alice | Patient: John Doe
+============================================================================
+                              Audit Logs
+============================================================================
+[2026-06-18 16:00:47] [ERROR] CSV Parsing Error in line: 'Dr. Invalid,INVALID_SPEC,5,MORNING' -> No enum constant clinicops.Specialization.INVALID_SPEC
+[2026-06-18 16:00:47] [ERROR] CSV Format Error (Invalid number of columns): Dr. Incomplete,CARDIOLOGIST
+[2026-06-18 16:00:47] [INFO] Bulk uploaded 4 doctors from doctors.csv
+[2026-06-18 16:00:47] [WARNING] Invalid mobile number attempt: invalid
+[2026-06-18 16:00:47] [INFO] Patient registered: John Doe (ID: P0001)
+[2026-06-18 16:00:47] [INFO] Appointment booked for Patient: John Doe with Doctor: Dr. Alice at Slot: 09:00 AM
+============================================================================
+Total Logs: 6
 ```

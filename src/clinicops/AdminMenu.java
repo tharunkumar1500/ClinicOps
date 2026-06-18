@@ -26,7 +26,7 @@ public class AdminMenu {
                     handleBulkEntry(scanner);
                     break;
                 case 3:
-                    System.out.println(">> [Placeholder] Audit - To be implemented.");
+                    AuditLogger.viewLogs();
                     break;
                 case 4:
                     displayDoctors();
@@ -68,8 +68,8 @@ public class AdminMenu {
 
         Doctor doctor = new Doctor(id, name, specialization, experience, shift);
         doctorList.add(doctor);
-
         System.out.println(">> Doctor registered successfully! ID: " + id);
+        AuditLogger.logInfo("Doctor registered manually: " + name + " (ID: " + id + ")");
     }
 
     private static void displayDoctors() {
@@ -94,6 +94,9 @@ public class AdminMenu {
         return doctorList;
     }
 
+    /**
+     * Handles bulk entry of doctors from a CSV file.
+     */
     private static void handleBulkEntry(Scanner scanner) {
         System.out.println("\n--- Bulk Entry (Doctors) ---");
         String filePath = ScannerHelper.readNonEmptyString(scanner, "  Enter the CSV file path: ");
@@ -104,8 +107,10 @@ public class AdminMenu {
             doctorList.addAll(newDoctors);
             idCounter += newDoctors.size();
             System.out.println(">> " + newDoctors.size() + " doctors successfully imported!");
+            AuditLogger.logInfo("Bulk uploaded " + newDoctors.size() + " doctors from " + filePath);
         } else {
-            System.out.println(">> No valid doctors imported from the file.");
+            System.out.println(">> No new doctors were imported.");
+            AuditLogger.logWarning("Bulk upload attempted from " + filePath + " but no new doctors imported.");
         }
     }
 }

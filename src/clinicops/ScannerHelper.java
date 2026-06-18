@@ -82,6 +82,7 @@ public class ScannerHelper {
                 valid = true;
             } else {
                 System.out.println(">> Invalid mobile number. Must be 10 digits starting with 6-9. Try again.");
+                AuditLogger.logWarning("Invalid mobile number attempt: " + mobile);
             }
         }
         return mobile;

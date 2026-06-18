@@ -86,6 +86,7 @@ public class FrontDeskMenu {
         
         patientList.add(patient);
         System.out.println(">> Patient registered successfully! ID: " + id);
+        AuditLogger.logInfo("Patient registered: " + name + " (ID: " + id + ")");
     }
 
     /**
@@ -166,6 +167,7 @@ public class FrontDeskMenu {
             
             System.out.println("\n>> Appointment Booked Successfully!");
             System.out.println("   " + appointment);
+            AuditLogger.logInfo("Appointment booked for Patient: " + patient.getName() + " with Doctor: " + assignedDoctor.getName() + " at Slot: " + selectedSlot);
         }
     }
 }
